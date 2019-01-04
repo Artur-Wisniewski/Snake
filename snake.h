@@ -8,10 +8,12 @@ class CSnake:public CFramedWindow// <- CFramedWindow <- CWindow <- CView
 public:
   CSnake(CRect r, char _c = ' ');
 private:
+  void paint();
+  bool handleEvent(int key);
   int score;/* <- definiuje lvl */
   bool h_bool;
   void help();
-  void paint();
+
 };
 
 #endif

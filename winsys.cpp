@@ -178,7 +178,7 @@ int CDesktop::getEvent() //pozyskiwanie key
   return ngetch();
 }
 
-void CDesktop::run()//core of the game
+void CDesktop::run()//core of the game// Tu wykonywane sa wszystkie CGroups
 {
   update_screen();
   paint();
@@ -186,13 +186,6 @@ void CDesktop::run()//core of the game
   while(1)
   {
     int c = getEvent();
-    /*if((c == 'h' || c == 'H') && h_bool == 0)
-    {
-        (*i)->help();
-        (*i)->h_bool = 1;
-    }
-    else if((c == 'h' || c == 'H') && h_bool == 1)
-        (*i)->h_bool = 0;*/
     if(c == 'q' || c == 'Q')
       break;
     if(c == KEY_RESIZE || handleEvent(c))

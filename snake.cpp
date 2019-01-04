@@ -27,3 +27,18 @@ void CSnake::help()
         /*empty place for something*/
     }
 }
+bool CSnake::handleEvent(int key)
+{
+  //else
+  if(key == 'h' || key == 'H')
+  {
+    if(h_bool == false)
+    h_bool = true;
+    else if(h_bool == true)
+    h_bool = false;
+    return true;
+  }
+  if(h_bool && CWindow::handleEvent(key))
+  return true;
+  return false;
+}
