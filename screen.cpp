@@ -10,23 +10,23 @@ static int cury, curx;
 
 void init_screen()
 {
-  initscr();
-  cbreak();
-  noecho();
+  initscr();/* Start curses mode 		  */
+  cbreak(); /* Line buffering disabled	we can disable the line buffering to avoid <enter> after input.*/
+  noecho();/*These functions control the echoing of characters typed by the user to the terminal.*/
   timeout(20);
-  nonl();
-  leaveok(stdscr,TRUE);
-  intrflush(stdscr, FALSE);
-  keypad(stdscr, TRUE);
-  curs_set(0);
+  nonl(); /*https://linux.die.net/man/3/nonl*/
+  leaveok(stdscr,TRUE);/*reduces the need for cursor motions*/
+  intrflush(stdscr, FALSE);/*giving the effect of faster response to the interrupt, but causing curses to have the wrong idea of what is on the screen. */
+  keypad(stdscr, TRUE); /*It enables the reading of function keys like F1, F2, arrow keys etc.*/
+  curs_set(0);/*The curs_set routine sets the cursor state is set to invisible, normal, or very visible for visibility equal to 0, 1, or 2 */
 }
 
-void done_screen()
+void done_screen()//wywolywane podczas zakonczenia programu
 {
-  endwin();
+  endwin(); /* End curses mode		  */
 }
 
-void update_screen()
+void update_screen()//aktualizuje polozenie obrazu
 {
   getscreenanchor(TopLeft.y, TopLeft.x);
   getscreensize(BottomRight.y, BottomRight.x);
@@ -35,17 +35,17 @@ void update_screen()
 
 int ngetch()
 {
-  return wgetch(stdscr);
+  return wgetch(stdscr);/*getting value from user*/
 }
 
 void getscreenanchor(int &y, int &x)
 {
-  getbegyx(stdscr, y, x);
+  getbegyx(stdscr, y, x);/* get the number of begin rows and columns */
 }
 
 void getscreensize(int &y, int &x)
 {
-  getmaxyx(stdscr, y, x);
+  getmaxyx(stdscr, y, x); /* get the number of rows and columns */
 }
 
 int gotoyx(int y, int x)
@@ -67,8 +67,8 @@ void printc(char c)
   {
     if(cury >= TopLeft.y && cury < BottomRight.y && curx >= TopLeft.x && curx < BottomRight.x)
     {
-      wmove(stdscr, cury, curx);
-      addch(c);
+      wmove(stdscr, cury, curx); /*change current position*/
+      addch(c);                     /*put a single character into the current cursor location and advance the position of the cursor.*/
     }
     curx++;
   }

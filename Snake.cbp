@@ -22,6 +22,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-lncurses" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -32,7 +33,16 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="main.cpp" />
+		<Unit filename="cpoint.h" />
+		<Unit filename="main.cpp">
+			<Option compiler="gcc" use="0" buildCommand="c++ main.cpp snake.cpp winsys.cpp screen.cpp -o snake.o -lncurses" />
+		</Unit>
+		<Unit filename="screen.cpp" />
+		<Unit filename="screen.h" />
+		<Unit filename="snake.cpp" />
+		<Unit filename="snake.h" />
+		<Unit filename="winsys.cpp" />
+		<Unit filename="winsys.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

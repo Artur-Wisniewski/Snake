@@ -1,7 +1,7 @@
 #include "winsys.h"
 #include "cpoint.h"
 #include "screen.h"
-
+#include "snake.h"
 #include <list>
 #include <string>
 #include <ctype.h>
@@ -47,7 +47,7 @@ void CFramedWindow::paint()
 {
   for(int y = geom.topleft.y; y < geom.topleft.y + geom.size.y; y++)
   {
-    if((y == geom.topleft.y) || (y == geom.topleft.y + geom.size.y-1))
+    if((y == geom.topleft.y) || (y == geom.topleft.y + geom.size.y-1))//start or end
     {
       for(int x = geom.topleft.x; x < geom.topleft.x + geom.size.x; x++)
       {
@@ -144,8 +144,7 @@ void CGroup::insert(CView * v)
 
 CGroup::~CGroup()
 {
-  for (list< CView * >::iterator i = children.begin();
-       i != children.end(); i++)
+  for (list< CView * >::iterator i = children.begin();i != children.end(); i++)
     delete(*i);
 }
 
@@ -157,7 +156,7 @@ CDesktop::CDesktop() : CGroup(CRect())
 
 CDesktop::~CDesktop()
 {
-  done_screen();
+  done_screen(); //endwin - znika ekran po zakonczeniu programu
 }
 
 void CDesktop::paint()
@@ -174,24 +173,28 @@ void CDesktop::paint()
   CGroup::paint();
 }
 
-int CDesktop::getEvent()
+int CDesktop::getEvent() //pozyskiwanie key
 {
   return ngetch();
 }
 
-void CDesktop::run()
+void CDesktop::run()//core of the game
 {
   update_screen();
   paint();
   refresh();
-
   while(1)
   {
     int c = getEvent();
-
+    /*if((c == 'h' || c == 'H') && h_bool == 0)
+    {
+        (*i)->help();
+        (*i)->h_bool = 1;
+    }
+    else if((c == 'h' || c == 'H') && h_bool == 1)
+        (*i)->h_bool = 0;*/
     if(c == 'q' || c == 'Q')
       break;
-
     if(c == KEY_RESIZE || handleEvent(c))
     {
       update_screen();

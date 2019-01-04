@@ -17,13 +17,11 @@ struct CPoint
     return *this;
   }
 };
-
 struct CRect
 {
   CPoint topleft;
   CPoint size;
-  CRect(CPoint t1=CPoint(), CPoint s=CPoint()):
-    topleft(t1), size(s) {};
+  CRect(CPoint t1=CPoint(), CPoint s=CPoint()):topleft(t1), size(s) {};
 };
 
 #endif

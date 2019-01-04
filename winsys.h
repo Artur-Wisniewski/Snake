@@ -23,7 +23,7 @@ public:
   virtual void move (const CPoint & delta);
 };
 
-class CWindow:public CView
+class CWindow:public CView //CWindow <- CView
 {
 protected:
   char c;
@@ -34,7 +34,7 @@ public:
   bool handleEvent(int key);
 };
 
-class CFramedWindow:public CWindow
+class CFramedWindow:public CWindow //CFramedWindow <- CWindow <- CView
 {
 public:
   CFramedWindow(CRect r, char _c = '\'') : CWindow(r, _c) {}
@@ -42,17 +42,17 @@ public:
   void paint();
 };
 
-class CInputLine:public CFramedWindow
+class CInputLine:public CFramedWindow // CInputLine <- CFramedWindow <- CWindow <- CView
 {
   string text;
 public:
-  CInputLine(CRect r, char _c = ',') : CFramedWindow(r, _c) {}
+  CInputLine(CRect r, char _c = ',') : CFramedWindow(r, _c) {} //catchy
 
   void paint();
   bool handleEvent(int c);
 };
 
-class CGroup:public CView
+class CGroup:public CView //CGroup <- CView
 {
   list< CView * > children;
 public:
@@ -64,7 +64,7 @@ public:
   void insert(CView * v);
 };
 
-class CDesktop:public CGroup
+class CDesktop:public CGroup //CDesktop <- CGroup <- CView
 {
 public:
   CDesktop();
