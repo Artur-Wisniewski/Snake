@@ -20,6 +20,7 @@ private:
   bool p_bool;
   Body snake_body;
   int speed;
+  bool gm_ov_bool;
   void help();
   void snake();
   void restart();

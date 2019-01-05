@@ -4,7 +4,7 @@
 #include <time.h>
 #include<math.h>
 CSnake::CSnake(CRect r, char _c /*=' '*/):      //duzy czas odswiezania
-CFramedWindow(r, _c),score(0),h_bool(true),speed(100000),p_bool(false),is_fruit_bool(false)
+CFramedWindow(r, _c),score(0),h_bool(true),speed(100000),p_bool(false),is_fruit_bool(false),gm_ov_bool(false)
 {
     fruit_position.x = 20;
     fruit_position.y = 5;
@@ -15,16 +15,14 @@ CFramedWindow(r, _c),score(0),h_bool(true),speed(100000),p_bool(false),is_fruit_
 }
 void CSnake::paint()
 {
-
         CFramedWindow::paint();
         fruit();
         snake();
         if(h_bool)
             help();
         level();
-        if(!h_bool && !p_bool)
+        if(!h_bool && !p_bool )
             usleep(speed);
-
 }
 void CSnake::help() // void CInputLine::paint() tu mozna było uzyc
 {
@@ -80,7 +78,7 @@ bool CSnake::handleEvent(int key)
 }
 void CSnake::snake()
 {
-    if(!h_bool && !p_bool)//chodzi jesli menu wylaczone
+    if(!h_bool && !p_bool && !gm_ov_bool)//chodzi jesli menu wylaczone
     {
         //snake_body.part.pop_back();
         snake_body.part.push_front(snake_body.part.front());
@@ -108,8 +106,16 @@ void CSnake::snake()
                 break;
         }
         bite();
+        CPoint temp = snake_body.part.front();
+        snake_body.part.pop_front();
+        if(collision(temp))
+            gm_ov_bool = true;
+        snake_body.part.push_front(temp);
+    }else if(gm_ov_bool)
+    {
+         gotoyx(geom.topleft.y+9,geom.topleft.x+17);
+         printl("GAME OVER");
     }
-
     init_pair(1, COLOR_BLACK,COLOR_GREEN);//waz tlo
 	attron(COLOR_PAIR(1));
     for(list< CPoint >::iterator i = snake_body.part.begin(); i != snake_body.part.end(); i++)//ogon
@@ -117,8 +123,8 @@ void CSnake::snake()
         gotoyx(i->y+geom.topleft.y,i->x+geom.topleft.x);
         printc('X');
     }
-    //gotoyx(snake_body.part.begin()->y+geom.topleft.y,snake_body.part.begin()->x+geom.topleft.x);//glowa
-    //printc('0');
+    gotoyx(snake_body.part.begin()->y+geom.topleft.y,snake_body.part.begin()->x+geom.topleft.x);//glowa
+    printc('O');
     attroff(COLOR_PAIR(1)); //off color
 }
 void CSnake::restart()
@@ -129,6 +135,7 @@ void CSnake::restart()
     snake_body.part.push_back(CPoint(2,2));
     snake_body.dir = RIGHT;
     is_fruit_bool = false;
+    gm_ov_bool = false;
     h_bool = true;
     p_bool = false;
     score = 0;
