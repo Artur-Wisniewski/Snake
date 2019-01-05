@@ -17,9 +17,12 @@ private:
   bool handleEvent(int key);
   int score;/* <- definiuje lvl co 3 score 1 lvl */
   bool h_bool;
+  bool p_bool;
   Body snake_body;
+  int speed;
   void help();
   void snake();
+  void restart();
 };
 
 #endif

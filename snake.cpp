@@ -2,7 +2,7 @@
 #include "screen.h"
 #include <unistd.h>
 CSnake::CSnake(CRect r, char _c /*=' '*/):
-CFramedWindow(r, _c),score(0),h_bool(true)
+CFramedWindow(r, _c),score(0),h_bool(true),speed(100000),p_bool(false)
 {
     snake_body.dir = RIGHT;
     snake_body.part.push_back(CPoint(4,2));
@@ -11,11 +11,13 @@ CFramedWindow(r, _c),score(0),h_bool(true)
 }
 void CSnake::paint()
 {
-    CFramedWindow::paint();
-    snake();
-    if(h_bool)
-        help();
-    usleep(10000);
+
+        CFramedWindow::paint();
+        snake();
+        if(h_bool)
+            help();
+        if(!h_bool && !p_bool)
+        usleep(speed);
 }
 void CSnake::help() // void CInputLine::paint() tu mozna było uzyc
 {
@@ -29,7 +31,7 @@ void CSnake::help() // void CInputLine::paint() tu mozna było uzyc
 }
 bool CSnake::handleEvent(int key)
 {
-    if(!h_bool)
+    if(!h_bool && !p_bool)
     {
       switch (key)
       {
@@ -53,24 +55,25 @@ bool CSnake::handleEvent(int key)
     }
   if(key == 'h' || key == 'H')
   {
-    if(!h_bool)
-    h_bool = true;
-    else if(h_bool)
-    h_bool = false;
-    return true;
+    h_bool = !h_bool;
   }
-  /*else if(key == 'p' || key == 'P')
+  else if(key == 'p' || key == 'P') // pause mode
   {
+        p_bool = !p_bool;
   }
   else if(key == 'r' || key == 'R')
   {
-  }*/
-  if(h_bool && CWindow::handleEvent(key));
+        restart();
+  }
+  if(h_bool)
+  {
+       CWindow::handleEvent(key);
+  }
   return true;
 }
 void CSnake::snake()
 {
-    if(!h_bool)//chodzi jesli menu wylaczone
+    if(!h_bool && !p_bool)//chodzi jesli menu wylaczone
     {
         snake_body.part.pop_back();
         snake_body.part.push_front(snake_body.part.front());
@@ -98,15 +101,25 @@ void CSnake::snake()
                 break;
         }
     }
-    init_pair(1, COLOR_BLACK,COLOR_GREEN);
+    init_pair(1, COLOR_BLACK,COLOR_GREEN);//waz tlo
 	attron(COLOR_PAIR(1));
     for(list< CPoint >::iterator i = snake_body.part.begin(); i != snake_body.part.end(); i++)//ogon
     {
         gotoyx(i->y+geom.topleft.y,i->x+geom.topleft.x);
-        printc('+');
+        printc('X');
     }
-    gotoyx(snake_body.part.begin()->y+geom.topleft.y,snake_body.part.begin()->x+geom.topleft.x);//glowa
-    printc('0');
+    //gotoyx(snake_body.part.begin()->y+geom.topleft.y,snake_body.part.begin()->x+geom.topleft.x);//glowa
+    //printc('0');
     attroff(COLOR_PAIR(1)); //off color
-
+}
+void CSnake::restart()
+{
+    snake_body.part.clear();
+    snake_body.part.push_back(CPoint(4,2));
+    snake_body.part.push_back(CPoint(3,2));
+    snake_body.part.push_back(CPoint(2,2));
+    snake_body.dir = RIGHT;
+    h_bool = true;
+    p_bool = false;
+    score = 0;
 }
