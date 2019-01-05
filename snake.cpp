@@ -1,5 +1,6 @@
 #include "snake.h"
 #include "screen.h"
+#include <unistd.h>
 CSnake::CSnake(CRect r, char _c /*=' '*/):
 CFramedWindow(r, _c),score(0),h_bool(true)
 {
@@ -14,6 +15,7 @@ void CSnake::paint()
     snake();
     if(h_bool)
         help();
+    usleep(10000);
 }
 void CSnake::help() // void CInputLine::paint() tu mozna było uzyc
 {
@@ -96,13 +98,15 @@ void CSnake::snake()
                 break;
         }
     }
-    for(list< CPoint >::iterator i = snake_body.part.begin(); i != snake_body.part.end(); i++)
+    init_pair(1, COLOR_BLACK,COLOR_GREEN);
+	attron(COLOR_PAIR(1));
+    for(list< CPoint >::iterator i = snake_body.part.begin(); i != snake_body.part.end(); i++)//ogon
     {
         gotoyx(i->y+geom.topleft.y,i->x+geom.topleft.x);
         printc('+');
     }
-    gotoyx(snake_body.part.begin()->y+geom.topleft.y,snake_body.part.begin()->x+geom.topleft.x);
-    printc('*');
-
+    gotoyx(snake_body.part.begin()->y+geom.topleft.y,snake_body.part.begin()->x+geom.topleft.x);//glowa
+    printc('0');
+    attroff(COLOR_PAIR(1)); //off color
 
 }

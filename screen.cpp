@@ -3,7 +3,6 @@
 #include "cpoint.h"
 
 #define LINE_MAX 255
-
 static CPoint TopLeft;
 static CPoint BottomRight;
 static int cury, curx;
@@ -19,6 +18,11 @@ void init_screen()
   intrflush(stdscr, FALSE);/*giving the effect of faster response to the interrupt, but causing curses to have the wrong idea of what is on the screen. */
   keypad(stdscr, TRUE); /*It enables the reading of function keys like F1, F2, arrow keys etc.*/
   curs_set(0);/*The curs_set routine sets the cursor state is set to invisible, normal, or very visible for visibility equal to 0, 1, or 2 */
+  if(has_colors() == TRUE)
+  {
+		start_color();
+        use_default_colors();
+  }
 }
 
 void done_screen()//wywolywane podczas zakonczenia programu
