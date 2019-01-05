@@ -23,6 +23,12 @@ private:
   void help();
   void snake();
   void restart();
+  bool is_fruit_bool;
+  void fruit();
+  bool collision(CPoint&);
+  void bite();
+  void level();
+  CPoint fruit_position;
 };
 
 #endif
