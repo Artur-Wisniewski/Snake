@@ -12,7 +12,7 @@ void init_screen()
   initscr();/* Start curses mode 		  */
   cbreak(); /* Line buffering disabled	we can disable the line buffering to avoid <enter> after input.*/
   noecho();/*These functions control the echoing of characters typed by the user to the terminal.*/
-  timeout(20);
+  timeout(300);/* notimeout, timeout, wtimeout - control blocking on input */
   nonl(); /*https://linux.die.net/man/3/nonl*/
   leaveok(stdscr,TRUE);/*reduces the need for cursor motions*/
   intrflush(stdscr, FALSE);/*giving the effect of faster response to the interrupt, but causing curses to have the wrong idea of what is on the screen. */
@@ -93,3 +93,9 @@ int printl(const char* fmt, ...)
   va_end(ap);
   return !ERR;
 }
+/*Dlaczego moj game loop jest amazing?
+    poniewaz czeka na input w roznych czasach
+    przyspieszanie dziala na zasadzie czekania jesli dostanie szybko key to wykonuje szybicej instrukcje
+    jesli nie dostanie to czeka ten czas oczekiwania
+    timeout to czas czekania na przycisk
+*/

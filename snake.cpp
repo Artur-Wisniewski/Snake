@@ -3,8 +3,9 @@
 #include <time.h>
 #include<math.h>
 #include <unistd.h>
+#define start_speed 300
 CSnake::CSnake(CRect r, char _c /*=' '*/):      //duzy czas odswiezania
-CFramedWindow(r, _c),score(0),h_bool(true),p_bool(false),is_fruit_bool(false),gm_ov_bool(false),speed(110000)
+CFramedWindow(r, _c),score(0),h_bool(true),p_bool(false),is_fruit_bool(false),gm_ov_bool(false),speed(start_speed)
 {
     loop = 0;
     fruit_position.x = 20;
@@ -22,7 +23,6 @@ void CSnake::paint()
         if(h_bool)
             help();
         level();
-        usleep(speed);
 }
 void CSnake::help() // void CInputLine::paint() tu mozna było uzyc
 {
@@ -74,7 +74,7 @@ bool CSnake::handleEvent(int key)
   {
        CWindow::handleEvent(key);
   }
-  run();
+  step();
   //usleep(100000);
   return true;
 }
@@ -95,7 +95,7 @@ void CSnake::snake()
     printc('O');
     attroff(COLOR_PAIR(1)); //off color
 }
-void CSnake::run()
+void CSnake::step()
 {
     if(!h_bool && !p_bool && !gm_ov_bool)//chodzi jesli menu wylaczone
     {
@@ -144,6 +144,7 @@ void CSnake::restart()
     h_bool = true;
     p_bool = false;
     score = 0;
+    speed = start_speed;
 }
 void CSnake::fruit()
 {
@@ -176,8 +177,9 @@ void CSnake::bite()
     {
         is_fruit_bool = false;
         score+=1;
-        if(speed > 10000)
-        speed -= 2000;
+        if(speed > 10)
+        speed -= 8;
+        timeout(speed);
     }
     else
         snake_body.part.pop_back();

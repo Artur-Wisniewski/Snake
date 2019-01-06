@@ -21,7 +21,7 @@ private:
   Body snake_body;
   bool gm_ov_bool;
   CPoint fruit_position;
-  void run();
+  void step();
   void bite();
   void help();
   void snake();
