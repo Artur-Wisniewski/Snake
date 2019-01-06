@@ -13,25 +13,25 @@ class CSnake:public CFramedWindow// <- CFramedWindow <- CWindow <- CView
 public:
   CSnake(CRect r, char _c = ' ');
 private:
-  void paint();
-  bool handleEvent(int key);
+  int loop;
+  int speed;
   int score;/* <- definiuje lvl co 3 score 1 lvl */
   bool h_bool;
   bool p_bool;
   Body snake_body;
   bool gm_ov_bool;
-  int loop;
-  int speed;
+  CPoint fruit_position;
   void run();
+  void bite();
   void help();
   void snake();
+  void paint();
+  void fruit();
+  void level();
   void restart();
   bool is_fruit_bool;
-  void fruit();
   bool collision(CPoint&);
-  void bite();
-  void level();
-  CPoint fruit_position;
+  bool handleEvent(int key);
 };
 
 #endif
