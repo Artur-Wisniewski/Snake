@@ -14,6 +14,7 @@ CFramedWindow(r, _c)
     gm_ov_bool = false;
     is_fruit_bool=false;
     speed = start_speed;
+    timeout(start_speed);
     fruit_position.y = 5;
     fruit_position.x = 20;
     snake_body.dir = RIGHT;
@@ -140,17 +141,18 @@ void CSnake::step()
 }
 void CSnake::restart()
 {
+    score = 0;
+    h_bool = true;
+    p_bool = false;
+    gm_ov_bool = false;
+    speed = start_speed;
+    timeout(start_speed);
+    is_fruit_bool = false;
+    snake_body.dir = RIGHT;
     snake_body.part.clear();
     snake_body.part.push_back(CPoint(4,2));
     snake_body.part.push_back(CPoint(3,2));
     snake_body.part.push_back(CPoint(2,2));
-    snake_body.dir = RIGHT;
-    is_fruit_bool = false;
-    gm_ov_bool = false;
-    h_bool = true;
-    p_bool = false;
-    score = 0;
-    speed = start_speed;
 }
 void CSnake::fruit()
 {

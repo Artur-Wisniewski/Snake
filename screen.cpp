@@ -12,7 +12,7 @@ void init_screen()
   initscr();/* Start curses mode 		  */
   cbreak(); /* Line buffering disabled	we can disable the line buffering to avoid <enter> after input.*/
   noecho();/*These functions control the echoing of characters typed by the user to the terminal.*/
-  timeout(300);/* notimeout, timeout, wtimeout - control blocking on input */
+  timeout(20);/* notimeout, timeout, wtimeout - control blocking on input */
   nonl(); /*https://linux.die.net/man/3/nonl*/
   leaveok(stdscr,TRUE);/*reduces the need for cursor motions*/
   intrflush(stdscr, FALSE);/*giving the effect of faster response to the interrupt, but causing curses to have the wrong idea of what is on the screen. */
