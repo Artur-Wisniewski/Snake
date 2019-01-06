@@ -10,9 +10,6 @@ struct Body{
 };
 class CSnake:public CFramedWindow// <- CFramedWindow <- CWindow <- CView
 {
-public:
-  CSnake(CRect r, char _c = ' ');
-private:
   int loop;
   int speed;
   int score;/* <- definiuje lvl co 3 score 1 lvl */
@@ -32,6 +29,8 @@ private:
   bool is_fruit_bool;
   bool collision(CPoint&);
   bool handleEvent(int key);
+public:
+  CSnake(CRect r, char _c = ' ');
 };
 
 #endif

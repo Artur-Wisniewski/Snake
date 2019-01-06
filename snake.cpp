@@ -5,11 +5,17 @@
 #include <unistd.h>
 #define start_speed 300
 CSnake::CSnake(CRect r, char _c /*=' '*/):      //duzy czas odswiezania
-CFramedWindow(r, _c),score(0),h_bool(true),p_bool(false),is_fruit_bool(false),gm_ov_bool(false),speed(start_speed)
+CFramedWindow(r, _c)
 {
     loop = 0;
-    fruit_position.x = 20;
+    score = 0;
+    h_bool=true;
+    p_bool=false;
+    gm_ov_bool = false;
+    is_fruit_bool=false;
+    speed = start_speed;
     fruit_position.y = 5;
+    fruit_position.x = 20;
     snake_body.dir = RIGHT;
     snake_body.part.push_back(CPoint(4,2));
     snake_body.part.push_back(CPoint(3,2));
