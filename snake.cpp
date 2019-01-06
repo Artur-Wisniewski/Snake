@@ -1,11 +1,12 @@
 #include "snake.h"
 #include "screen.h"
-#include <unistd.h>
 #include <time.h>
 #include<math.h>
+#include <unistd.h>
 CSnake::CSnake(CRect r, char _c /*=' '*/):      //duzy czas odswiezania
-CFramedWindow(r, _c),score(0),h_bool(true),speed(100000),p_bool(false),is_fruit_bool(false),gm_ov_bool(false)
+CFramedWindow(r, _c),score(0),h_bool(true),p_bool(false),is_fruit_bool(false),gm_ov_bool(false),speed(110000)
 {
+    loop = 0;
     fruit_position.x = 20;
     fruit_position.y = 5;
     snake_body.dir = RIGHT;
@@ -21,8 +22,7 @@ void CSnake::paint()
         if(h_bool)
             help();
         level();
-        if(!h_bool && !p_bool )
-            usleep(speed);
+        usleep(speed);
 }
 void CSnake::help() // void CInputLine::paint() tu mozna było uzyc
 {
@@ -43,19 +43,19 @@ bool CSnake::handleEvent(int key)
         case KEY_UP:
           if(snake_body.dir != DOWN)
           snake_body.dir = UP;
-          return true;
+          break;
         case KEY_DOWN:
           if(snake_body.dir != UP)
           snake_body.dir = DOWN;
-          return true;
+          break;
         case KEY_RIGHT:
           if(snake_body.dir != LEFT)
           snake_body.dir = RIGHT;
-          return true;
+          break;
         case KEY_LEFT:
           if(snake_body.dir != RIGHT)
           snake_body.dir = LEFT;
-          return true;
+          break;
       }
     }
   if(key == 'h' || key == 'H')
@@ -74,47 +74,15 @@ bool CSnake::handleEvent(int key)
   {
        CWindow::handleEvent(key);
   }
+  run();
+  //usleep(100000);
   return true;
 }
 void CSnake::snake()
 {
-    if(!h_bool && !p_bool && !gm_ov_bool)//chodzi jesli menu wylaczone
-    {
-        //snake_body.part.pop_back();
-        snake_body.part.push_front(snake_body.part.front());
-        switch(snake_body.dir)
-        {
-            case UP:
-                snake_body.part.front() +=  CPoint(0, -1);
-                if(snake_body.part.front().y == 0)
-                    snake_body.part.front().y = geom.size.y - 2;
-                break;
-            case RIGHT:
-                snake_body.part.front() +=  CPoint(1, 0);
-                if(snake_body.part.front().x == geom.size.x - 1)
-                    snake_body.part.front().x = 1;
-                break;
-            case DOWN:
-                snake_body.part.front() +=  CPoint(0, 1);
-                if(snake_body.part.front().y == geom.size.y - 1)
-                    snake_body.part.front().y = 1;
-                break;
-            case LEFT:
-                snake_body.part.front() +=  CPoint(-1, 0);
-                if(snake_body.part.front().x == 0)
-                    snake_body.part.front().x = geom.size.x - 2;
-                break;
-        }
-        bite();
-        CPoint temp = snake_body.part.front();
-        snake_body.part.pop_front();
-        if(collision(temp))
-            gm_ov_bool = true;
-        snake_body.part.push_front(temp);
-    }else if(gm_ov_bool)
-    {
-         gotoyx(geom.topleft.y+9,geom.topleft.x+17);
-         printl("GAME OVER");
+    if(gm_ov_bool){
+        gotoyx(geom.topleft.y+9,geom.topleft.x+17);
+        printl("GAME OVER");
     }
     init_pair(1, COLOR_BLACK,COLOR_GREEN);//waz tlo
 	attron(COLOR_PAIR(1));
@@ -126,6 +94,43 @@ void CSnake::snake()
     gotoyx(snake_body.part.begin()->y+geom.topleft.y,snake_body.part.begin()->x+geom.topleft.x);//glowa
     printc('O');
     attroff(COLOR_PAIR(1)); //off color
+}
+void CSnake::run()
+{
+    if(!h_bool && !p_bool && !gm_ov_bool)//chodzi jesli menu wylaczone
+    {
+
+                snake_body.part.push_front(snake_body.part.front());
+                switch(snake_body.dir)
+                {
+                    case UP:
+                        snake_body.part.front() +=  CPoint(0, -1);
+                        if(snake_body.part.front().y == 0)
+                            snake_body.part.front().y = geom.size.y - 2;
+                        break;
+                    case RIGHT:
+                        snake_body.part.front() +=  CPoint(1, 0);
+                        if(snake_body.part.front().x == geom.size.x - 1)
+                            snake_body.part.front().x = 1;
+                        break;
+                    case DOWN:
+                        snake_body.part.front() +=  CPoint(0, 1);
+                        if(snake_body.part.front().y == geom.size.y - 1)
+                            snake_body.part.front().y = 1;
+                        break;
+                    case LEFT:
+                        snake_body.part.front() +=  CPoint(-1, 0);
+                        if(snake_body.part.front().x == 0)
+                            snake_body.part.front().x = geom.size.x - 2;
+                        break;
+                }
+                bite();
+                CPoint temp = snake_body.part.front();
+                snake_body.part.pop_front();
+                if(collision(temp))
+                    gm_ov_bool = true;
+                snake_body.part.push_front(temp);
+    }
 }
 void CSnake::restart()
 {
@@ -171,8 +176,8 @@ void CSnake::bite()
     {
         is_fruit_bool = false;
         score+=1;
-        if(speed>10000)
-            speed-=2000;
+        if(speed > 10000)
+        speed -= 2000;
     }
     else
         snake_body.part.pop_back();

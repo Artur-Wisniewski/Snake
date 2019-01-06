@@ -6,6 +6,7 @@
 #include <string>
 #include <ctype.h>
 #include <stdarg.h>
+#include <unistd.h>
 using namespace std;
 
 void CView::move(const CPoint & delta)
@@ -194,5 +195,6 @@ void CDesktop::run()//core of the game// Tu wykonywane sa wszystkie CGroups
       paint();
       refresh();
     }
+
   }
 }

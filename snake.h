@@ -19,8 +19,10 @@ private:
   bool h_bool;
   bool p_bool;
   Body snake_body;
-  int speed;
   bool gm_ov_bool;
+  int loop;
+  int speed;
+  void run();
   void help();
   void snake();
   void restart();
