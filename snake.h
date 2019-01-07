@@ -10,6 +10,7 @@ struct Body{
 };
 class CSnake:public CFramedWindow// <- CFramedWindow <- CWindow <- CView
 {
+  bool is_moving;
   int loop;
   int speed;
   int score;/* <- definiuje lvl co 3 score 1 lvl */

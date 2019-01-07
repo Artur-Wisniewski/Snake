@@ -11,6 +11,7 @@ CFramedWindow(r, _c)
     score = 0;
     h_bool=true;
     p_bool=false;
+    is_moving = false;
     gm_ov_bool = false;
     is_fruit_bool=false;
     speed = start_speed;
@@ -45,6 +46,7 @@ bool CSnake::handleEvent(int key)
 {
     if(!h_bool && !p_bool)
     {
+      is_moving = true;
       switch (key)
       {
         case KEY_UP:
@@ -68,21 +70,35 @@ bool CSnake::handleEvent(int key)
   if(key == 'h' || key == 'H')
   {
     h_bool = !h_bool;
+    if(h_bool == true)
+    is_moving = false;
+    if(h_bool == false)
+    is_moving = true;
+    return true;
   }
   else if(key == 'p' || key == 'P') // pause mode
   {
         p_bool = !p_bool;
+        if(p_bool == true)
+        is_moving = false;
+        if(p_bool == false)
+        is_moving = true;
+        return true;
   }
   else if(key == 'r' || key == 'R')
   {
         restart();
+        return true;
   }
-  else if(h_bool)
+  else if(is_moving == false )
   {
-       CWindow::handleEvent(key);
+       if(CWindow::handleEvent(key))
+           return true;
+       return false;
   }
   step();
   //usleep(100000);
+  //false jesli nie am zadnego przycisku oraz jest h_bool lub p_bull
   return true;
 }
 void CSnake::snake()
@@ -144,6 +160,7 @@ void CSnake::restart()
     score = 0;
     h_bool = true;
     p_bool = false;
+    is_moving = false;
     gm_ov_bool = false;
     speed = start_speed;
     timeout(start_speed);
